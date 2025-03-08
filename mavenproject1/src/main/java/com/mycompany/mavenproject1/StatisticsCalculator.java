@@ -1,0 +1,103 @@
+package com.mycompany.mavenproject1;
+
+import org.apache.commons.math3.stat.StatUtils;
+import org.apache.commons.math3.stat.correlation.Covariance;
+
+import java.util.*;
+import org.apache.commons.math3.util.Pair;
+
+public class StatisticsCalculator {
+    private List<List<Double>> samples;
+    private static double tValue = 1.96; 
+    
+    public StatisticsCalculator(List<List<Double>> samples) {
+        this.samples = new ArrayList<>(samples);
+    }
+
+    public double calculateGeometricMean(List<Double> sample) {
+        return StatUtils.geometricMean(sample.stream().mapToDouble(Double::doubleValue).toArray());
+    }
+
+    public double calculateArithmeticMean(List<Double> sample) {
+        return StatUtils.mean(sample.stream().mapToDouble(Double::doubleValue).toArray());
+    }
+
+    public double calculateStandardDeviation(List<Double> sample) {
+        double[] array = sample.stream().mapToDouble(Double::doubleValue).toArray();
+        return Math.sqrt(StatUtils.variance(array));
+    }
+
+    public double calculateRange(List<Double> sample) {
+        double[] array = sample.stream().mapToDouble(Double::doubleValue).toArray();
+        return StatUtils.max(array) - StatUtils.min(array);
+    }
+
+    public double calculateCovariance(List<Double> sample1, List<Double> sample2) {
+        if (sample1.size() != sample2.size()) {
+            throw new IllegalArgumentException("Размеры выборок должны совпадать");
+        }
+        Covariance covariance = new Covariance();
+        return covariance.covariance(
+                sample1.stream().mapToDouble(Double::doubleValue).toArray(),
+                sample2.stream().mapToDouble(Double::doubleValue).toArray()
+        );
+    }
+
+    public double calculateCoefficientOfVariation(List<Double> sample) {
+        double mean = calculateArithmeticMean(sample);
+        double stdDev = calculateStandardDeviation(sample);
+        return (stdDev / mean) * 100;
+    }
+
+    public Pair<Double, Double> calculateConfidenceInterval(List<Double> sample) {
+        double mean = calculateArithmeticMean(sample);
+        double stdDev = calculateStandardDeviation(sample);
+        double marginOfError = tValue * (stdDev / Math.sqrt(sample.size()));
+        return new Pair<>(mean - marginOfError, mean + marginOfError);
+    }
+
+    public double calculateVariance(List<Double> sample) {
+        return StatUtils.variance(sample.stream().mapToDouble(Double::doubleValue).toArray());
+    }
+
+    public double findMax(List<Double> sample) {
+        return StatUtils.max(sample.stream().mapToDouble(Double::doubleValue).toArray());
+    }
+
+    public double findMin(List<Double> sample) {
+        return StatUtils.min(sample.stream().mapToDouble(Double::doubleValue).toArray());
+    }
+    
+    public int calculateSampleSize(List<Double> sample) {
+        return sample.size();
+    }
+
+    public Map<String, Double> calculateAllStatistics() {
+        Map<String, Double> results = new LinkedHashMap<>();
+        for (int i = 0; i < samples.size(); i++) {
+            List<Double> sample = samples.get(i);
+            String prefix = "Выборка " + (i + 1) + " - ";
+            results.put(prefix + "Среднее геометрическое", calculateGeometricMean(sample));
+            results.put(prefix + "Среднее арифметическое", calculateArithmeticMean(sample));
+            results.put(prefix + "Оценка стандартного отклонения", calculateStandardDeviation(sample));
+            results.put(prefix + "Размах", calculateRange(sample));
+            results.put(prefix + "Коэффициент вариации", calculateCoefficientOfVariation(sample));
+            results.put(prefix + "Оценка дисперсии", calculateVariance(sample));
+            results.put(prefix + "Максимум", findMax(sample));
+            results.put(prefix + "Минимум", findMin(sample));
+            results.put(prefix + "Количество элементов", (double) calculateSampleSize(sample));
+            Pair<Double, Double> confidenceInterval = calculateConfidenceInterval(sample);
+            results.put(prefix + "доверительный интервал (нижняя граница)", confidenceInterval.getKey());
+            results.put(prefix + "доверительный интервал (верхняя граница)", confidenceInterval.getValue());
+        }
+        for (int i = 0; i < samples.size(); i++) {
+            for (int j = i + 1; j < samples.size(); j++) {
+                String key = "Коэффициент ковариации  (Выборка " + (i + 1) + ", Выборка " + (j + 1) + ")";
+                results.put(key, calculateCovariance(samples.get(i), samples.get(j)));
+            }
+        }
+
+        return results;
+    }
+}
+
