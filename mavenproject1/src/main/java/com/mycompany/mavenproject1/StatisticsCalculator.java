@@ -15,20 +15,20 @@ public class StatisticsCalculator {
     }
 
     public double calculateGeometricMean(List<Double> sample) {
-        return StatUtils.geometricMean(sample.stream().mapToDouble(Double::doubleValue).toArray());
+        return StatUtils.geometricMean(toDoubleArray(sample));
     }
 
     public double calculateArithmeticMean(List<Double> sample) {
-        return StatUtils.mean(sample.stream().mapToDouble(Double::doubleValue).toArray());
+        return StatUtils.mean(toDoubleArray(sample));
     }
 
     public double calculateStandardDeviation(List<Double> sample) {
-        double[] array = sample.stream().mapToDouble(Double::doubleValue).toArray();
+        double[] array = toDoubleArray(sample);
         return Math.sqrt(StatUtils.variance(array));
     }
 
     public double calculateRange(List<Double> sample) {
-        double[] array = sample.stream().mapToDouble(Double::doubleValue).toArray();
+        double[] array = toDoubleArray(sample);
         return StatUtils.max(array) - StatUtils.min(array);
     }
 
@@ -38,8 +38,8 @@ public class StatisticsCalculator {
         }
         Covariance covariance = new Covariance();
         return covariance.covariance(
-                sample1.stream().mapToDouble(Double::doubleValue).toArray(),
-                sample2.stream().mapToDouble(Double::doubleValue).toArray()
+                toDoubleArray(sample1),
+                toDoubleArray(sample2)
         );
     }
 
@@ -57,15 +57,15 @@ public class StatisticsCalculator {
     }
 
     public double calculateVariance(List<Double> sample) {
-        return StatUtils.variance(sample.stream().mapToDouble(Double::doubleValue).toArray());
+        return StatUtils.variance(toDoubleArray(sample));
     }
 
     public double findMax(List<Double> sample) {
-        return StatUtils.max(sample.stream().mapToDouble(Double::doubleValue).toArray());
+        return StatUtils.max(toDoubleArray(sample));
     }
 
     public double findMin(List<Double> sample) {
-        return StatUtils.min(sample.stream().mapToDouble(Double::doubleValue).toArray());
+        return StatUtils.min(toDoubleArray(sample));
     }
     
     public int calculateSampleSize(List<Double> sample) {
@@ -91,13 +91,27 @@ public class StatisticsCalculator {
             results.put(prefix + "доверительный интервал (верхняя граница)", confidenceInterval.getValue());
         }
         for (int i = 0; i < samples.size(); i++) {
-            for (int j = i + 1; j < samples.size(); j++) {
+            for (int j = i; j < samples.size(); j++) {
                 String key = "Коэффициент ковариации  (Выборка " + (i + 1) + ", Выборка " + (j + 1) + ")";
                 results.put(key, calculateCovariance(samples.get(i), samples.get(j)));
             }
         }
-
+        for (int i = 0; i < samples.size(); i++) {
+            for (int j = i + 1; j < samples.size(); j++) {
+                String key = "Коэффициент ковариации  (Выборка " + (j + 1) + ", Выборка " + (i + 1) + ")";
+                results.put(key, calculateCovariance(samples.get(j), samples.get(i)));
+            }
+        }
         return results;
     }
+    
+    private double[] toDoubleArray(List<Double> sample) {
+        double[] array = new double[sample.size()];
+        for (int i = 0; i < sample.size(); i++) {
+            array[i] = sample.get(i);
+        }
+        return array;
+    }
+    
 }
 
