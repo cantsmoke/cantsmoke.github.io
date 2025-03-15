@@ -20,7 +20,7 @@ public class ModelController {
         this.dataStorage = new DataStorage();
     }
 
-    public void importAndStoreData(File file, String sheetName) throws IOException {
+    public void importAndStoreData(File file, String sheetName) throws IOException, Exception {
         fileImporter = new FileImporter(file.getAbsolutePath());
         List<List<Double>> samples = fileImporter.importData(sheetName);
         dataStorage.storeData(samples);

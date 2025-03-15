@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class FileImporter {
@@ -21,45 +20,34 @@ public class FileImporter {
         return filePath;
     }
     
-    public List<List<Double>> importData(String sheetName) throws IOException {
+    public List<List<Double>> importData(String sheetName) throws Exception {
         validateFile();
-        List<List<Double>> samples = new ArrayList<>();
 
+        List<List<Double>> samples = new ArrayList<>();
         try (FileInputStream fis = new FileInputStream(new File(filePath));
-             Workbook workbook = new XSSFWorkbook(fis)) {
+             Workbook workbook = WorkbookFactory.create(fis)) {
 
             Sheet sheet = workbook.getSheet(sheetName);
             if (sheet == null) {
                 throw new IllegalArgumentException("Лист не найден: " + sheetName);
             }
 
-            Iterator<Row> rowIterator = sheet.iterator();
-            boolean isFirstRow = true;
+            Row firstRow = sheet.getRow(0);
+            int columnCount = firstRow.getLastCellNum();
+            for (int i = 0; i < columnCount; i++) {
+                samples.add(new ArrayList<>());
+            }
 
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-
-                if (isFirstRow) {
-                    isFirstRow = false;
+            int rowCount = sheet.getLastRowNum();
+            for (int rowIndex = 1; rowIndex <= rowCount; rowIndex++) {
+                Row row = sheet.getRow(rowIndex);
+                if (row == null) {
                     continue;
                 }
-
-                if (!isRowValid(row)) {
-                    continue;
-                }
-
-                Iterator<Cell> cellIterator = row.cellIterator();
-                int columnIndex = 0;
-
-                while (cellIterator.hasNext()) {
-                    Cell cell = cellIterator.next();
+                for (int colIndex = 0; colIndex < columnCount; colIndex++) {
+                    Cell cell = row.getCell(colIndex, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
                     double value = getNumericCellValue(cell);
-
-                    if (samples.size() <= columnIndex) {
-                        samples.add(new ArrayList<>());
-                    }
-                    samples.get(columnIndex).add(value);
-                    columnIndex++;
+                    samples.get(colIndex).add(value);
                 }
             }
         }
@@ -92,17 +80,4 @@ public class FileImporter {
         }
     }
 
-    private boolean isRowValid(Row row) {
-        for (Cell cell : row) {
-            if (cell == null || cell.getCellType() == CellType.BLANK) {
-                return false;
-            }
-            try {
-                getNumericCellValue(cell);
-            } catch (IllegalArgumentException e) {
-                return false;
-            }
-        }
-        return true;
-    }
 }
