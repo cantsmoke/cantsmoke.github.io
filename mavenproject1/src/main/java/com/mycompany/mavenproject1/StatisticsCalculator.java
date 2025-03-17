@@ -4,11 +4,14 @@ import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.correlation.Covariance;
 
 import java.util.*;
+import org.apache.commons.math3.distribution.TDistribution;
 import org.apache.commons.math3.util.Pair;
 
 public class StatisticsCalculator {
     private List<List<Double>> samples;
-    private static double tValue = 1.96; 
+    private static double confidenceLevel = 0.05;
+    private static double alpha = 1- confidenceLevel;
+    private static double tailProbability = alpha/2;
     
     public StatisticsCalculator(List<List<Double>> samples) {
         this.samples = new ArrayList<>(samples);
@@ -52,7 +55,11 @@ public class StatisticsCalculator {
     public Pair<Double, Double> calculateConfidenceInterval(List<Double> sample) {
         double mean = calculateArithmeticMean(sample);
         double stdDev = calculateStandardDeviation(sample);
-        double marginOfError = tValue * (stdDev / Math.sqrt(sample.size()));
+        int sampleSize = sample.size();
+        int degreesOfFreedom = sampleSize - 1;
+        TDistribution tDist = new TDistribution(degreesOfFreedom);
+        double quantile = tDist.inverseCumulativeProbability(1 - tailProbability); 
+        double marginOfError = quantile * (stdDev / Math.sqrt(sampleSize));
         return new Pair<>(mean - marginOfError, mean + marginOfError);
     }
 
