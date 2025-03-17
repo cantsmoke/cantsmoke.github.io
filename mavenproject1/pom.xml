@@ -4,6 +4,35 @@
     <groupId>com.mycompany</groupId>
     <artifactId>mavenproject1</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.mycompany.mavenproject1.LB1</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-shade-plugin</artifactId>
+               <version>3.2.4</version>
+               <executions>
+                   <execution>
+                       <phase>package</phase>
+                       <goals>
+                           <goal>shade</goal>
+                       </goals>
+                   </execution>
+               </executions>
+           </plugin>
+        </plugins>
+    </build>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,6 +52,5 @@
             <version>3.6.1</version>
         </dependency>
     </dependencies>
-
     <name>LB1</name>
 </project>
