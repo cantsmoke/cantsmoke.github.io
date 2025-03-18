@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class MainController {
     private MainView mainView;
@@ -49,13 +50,11 @@ public class MainController {
             if (importFile == null) {
                 return;
             }
-
             List<String> sheetNames = getSheetNames(importFile);
             if (sheetNames.isEmpty()) {
                 mainView.showErrorMessage("Файл не содержит листов.");
                 return;
             }
-
             String selectedSheet = mainView.showSheetChooser(sheetNames);
             if (selectedSheet == null) {
                 return;
@@ -73,7 +72,6 @@ public class MainController {
             if (exportFile == null) {
                 return;
             }
-
             modelController.exportStatistics(exportFile);
             mainView.updateStatusLabel("Результаты успешно экспортированы.");
         } catch (Exception ex) {
@@ -86,8 +84,8 @@ public class MainController {
     }
 
     private List<String> getSheetNames(File file) throws Exception {
-        try (var fis = new java.io.FileInputStream(file);
-             var workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook(fis)) {
+        try (java.io.FileInputStream fis = new java.io.FileInputStream(file);
+            XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
             List<String> sheetNames = new java.util.ArrayList<>();
             for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
                 sheetNames.add(workbook.getSheetName(i));

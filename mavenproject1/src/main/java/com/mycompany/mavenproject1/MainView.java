@@ -68,7 +68,12 @@ public class MainView {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle(title);
         int result = fileChooser.showOpenDialog(frame);
-        return (result == JFileChooser.APPROVE_OPTION) ? fileChooser.getSelectedFile() : null;
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            return fileChooser.getSelectedFile();
+        } else {
+            return null;
+        }
     }
 
     public String showSheetChooser(List<String> sheets) {
@@ -93,14 +98,14 @@ public class MainView {
         statusLabel.setText(message);
     }
     
-     public void showStatisticsWindow(Map<String, Double> statistics) {
-        StringBuilder message = new StringBuilder("Рассчитанные показатели:\n");
+    public void showStatisticsWindow(Map<String, Double> statistics) {
+        String message = "Рассчитанные показатели:\n";
         for (Map.Entry<String, Double> entry : statistics.entrySet()) {
-            message.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+            message += entry.getKey() + ": " + entry.getValue() + "\n";
         }
-        JOptionPane.showMessageDialog(frame, message.toString(), "Рассчитанные показатели", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(frame, message, "Рассчитанные показатели", JOptionPane.INFORMATION_MESSAGE);
     }
-     
+
     public void setExportButtonEnabled(boolean enabled) {
         exportButton.setEnabled(enabled);
     }

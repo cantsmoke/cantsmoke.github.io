@@ -25,7 +25,7 @@ public class FileImporter {
 
         List<List<Double>> samples = new ArrayList<>();
         try (FileInputStream fis = new FileInputStream(new File(filePath));
-             Workbook workbook = new XSSFWorkbook(fis)) {
+            Workbook workbook = new XSSFWorkbook(fis)) {
 
             Sheet sheet = workbook.getSheet(sheetName);
             if (sheet == null) {
@@ -45,7 +45,7 @@ public class FileImporter {
                     continue;
                 }
                 for (int colIndex = 0; colIndex < columnCount; colIndex++) {
-                    Cell cell = row.getCell(colIndex, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                    Cell cell = row.getCell(colIndex);
                     double value = getNumericCellValue(cell);
                     samples.get(colIndex).add(value);
                 }
