@@ -25,7 +25,7 @@ public class FileImporter {
 
         List<List<Double>> samples = new ArrayList<>();
         try (FileInputStream fis = new FileInputStream(new File(filePath));
-             Workbook workbook = WorkbookFactory.create(fis)) {
+             Workbook workbook = new XSSFWorkbook(fis)) {
 
             Sheet sheet = workbook.getSheet(sheetName);
             if (sheet == null) {
