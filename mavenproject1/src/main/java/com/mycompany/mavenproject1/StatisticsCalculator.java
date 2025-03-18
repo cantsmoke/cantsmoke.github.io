@@ -9,8 +9,8 @@ import org.apache.commons.math3.util.Pair;
 
 public class StatisticsCalculator {
     private List<List<Double>> samples;
-    private static double confidenceLevel = 0.05;
-    private static double alpha = 1- confidenceLevel;
+    private static double confidenceLevel = 0.95;
+    private static double alpha = 1 - confidenceLevel;
     private static double tailProbability = alpha/2;
     
     public StatisticsCalculator(List<List<Double>> samples) {
