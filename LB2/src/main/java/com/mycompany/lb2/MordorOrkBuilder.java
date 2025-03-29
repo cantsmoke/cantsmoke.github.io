@@ -11,10 +11,13 @@ import com.mycompany.lb2.gear.OrcGearFactory;
  * @author Arseniy
  */
 import com.github.javafaker.Faker;
+import com.mycompany.lb2.gear.Banner;
+import com.mycompany.lb2.gear.Weapon;
 
 public class MordorOrkBuilder implements OrkBuilder {
     private final OrcGearFactory gearFactory;
     private Ork ork;
+    private static boolean flag = true;
 
     public MordorOrkBuilder(OrcGearFactory gearFactory) {
         this.gearFactory = gearFactory;
@@ -50,13 +53,27 @@ public class MordorOrkBuilder implements OrkBuilder {
     public void setHealth(int health) {
         this.ork.setHealth(health);
     }
+    
+    @Override
+    public void setWeapon(Weapon weapon) {
+        this.ork.setWeapon(weapon);
+        flag = false;
+    }
 
     @Override
     public Ork build() {
         this.ork.setName(comeUpWithName());
-        this.ork.setWeapon(gearFactory.createWeapon());
+        if (flag) {
+            this.ork.setWeapon(gearFactory.createWeapon());
+        }
         this.ork.setArmor(gearFactory.createArmor());
-        this.ork.setBanner(gearFactory.createBanner());
+        //this.ork.setBanner(gearFactory.createBanner());
+        flag = true;
         return this.ork;
+    }
+
+    @Override
+    public void setBanner() {
+        this.ork.setBanner(gearFactory.createBanner());
     }
 }

@@ -89,7 +89,9 @@ public class Ork {
     
     @Override
     public String toString() {
-        return name != null ? name : "Безымянный орк";
+        return name != null 
+            ? name + (banner != null ? " (" + banner.getName() + ")" : "") 
+            : "Безымянный орк";
     }
     
 }

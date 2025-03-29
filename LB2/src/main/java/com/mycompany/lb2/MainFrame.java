@@ -8,6 +8,7 @@ package com.mycompany.lb2;
  *
  * @author Arseniy
  */
+import com.mycompany.lb2.gear.Bow;
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -94,25 +95,26 @@ public class MainFrame extends JFrame {
         panel.setBorder(BorderFactory.createTitledBorder("Информация об орке"));
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5); // Поля вокруг компонентов
+        gbc.insets = new Insets(5, 5, 5, 5);
 
-        // Отображение имени, племени и снаряжения
+        // Тип орка
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panel.add(new JLabel("Имя: "), gbc);
+        gbc.gridwidth = 2; // Занимает 2 колонки
+        JLabel typeLabel = new JLabel("Тип орка: ");
+        panel.add(typeLabel, gbc);
 
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        panel.add(new JLabel(""), gbc); // Заглушка для имени
-
+        // Племя
         gbc.gridx = 0;
         gbc.gridy = 1;
+        gbc.gridwidth = 1; // Вернуться к одной колонке
         panel.add(new JLabel("Племя: "), gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
         panel.add(new JLabel(""), gbc); // Заглушка для племени
 
+        // Оружие, броня, знамя
         gbc.gridx = 0;
         gbc.gridy = 2;
         panel.add(new JLabel("Оружие: "), gbc);
@@ -174,6 +176,13 @@ public class MainFrame extends JFrame {
         JProgressBar healthBar = new JProgressBar(0, 200);
         panel.add(healthBar, gbc);
 
+        // Специальный предмет
+        gbc.gridx = 0;
+        gbc.gridy = 9;
+        gbc.gridwidth = 2; // Занимает 2 колонки
+        JLabel specialItemLabel = new JLabel("Специальный предмет: ");
+        panel.add(specialItemLabel, gbc);
+
         return panel;
     }
     
@@ -183,90 +192,115 @@ public class MainFrame extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        // Отображение имени, племени и снаряжения
+        // Тип орка
+        String type = "Пехотинец";
+        if (ork.getWeapon() instanceof Bow) { // Разведчик
+            type = "Разведчик";
+        } else if (ork.getBanner() != null) { // Командир
+            type = "Командир";
+        }
+
         gbc.gridx = 0;
         gbc.gridy = 0;
-        infoPanel.add(new JLabel("Имя: "), gbc);
+        gbc.gridwidth = 2; // Занимает 2 колонки
+        JLabel typeLabel = new JLabel("Тип орка: " + type);
+        infoPanel.add(typeLabel, gbc);
 
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        infoPanel.add(new JLabel(ork.getName()), gbc);
-
+        // Племя
         gbc.gridx = 0;
         gbc.gridy = 1;
+        gbc.gridwidth = 1; // Вернуться к одной колонке
         infoPanel.add(new JLabel("Племя: "), gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
-        infoPanel.add(new JLabel(ork.getBanner().getName()), gbc);
+        infoPanel.add(new JLabel(ork.getBanner() != null ? ork.getBanner().getName() : "Без знамени"), gbc);
 
+        // Отображение имени, оружия, брони и знамени
         gbc.gridx = 0;
         gbc.gridy = 2;
+        infoPanel.add(new JLabel("Имя: "), gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        infoPanel.add(new JLabel(ork.getName()), gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         infoPanel.add(new JLabel("Оружие: "), gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         infoPanel.add(new JLabel(ork.getWeapon().getName()), gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         infoPanel.add(new JLabel("Броня: "), gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         infoPanel.add(new JLabel(ork.getArmor().getName()), gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         infoPanel.add(new JLabel("Знамя: "), gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 4;
-        infoPanel.add(new JLabel(ork.getBanner().getName()), gbc);
-
-        // Сила
-        gbc.gridx = 0;
         gbc.gridy = 5;
+        infoPanel.add(new JLabel(ork.getBanner() != null ? ork.getBanner().getName() : "Без знамени"), gbc);
+
+        // Характеристики
+        gbc.gridx = 0;
+        gbc.gridy = 6;
         infoPanel.add(new JLabel("Сила: "), gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         JProgressBar strengthBar = new JProgressBar(0, 100);
         strengthBar.setValue(ork.getStrength());
         infoPanel.add(strengthBar, gbc);
 
-        // Ловкость
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 7;
         infoPanel.add(new JLabel("Ловкость: "), gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 6;
+        gbc.gridy = 7;
         JProgressBar agilityBar = new JProgressBar(0, 100);
         agilityBar.setValue(ork.getAgility());
         infoPanel.add(agilityBar, gbc);
 
-        // Интеллект
         gbc.gridx = 0;
-        gbc.gridy = 7;
+        gbc.gridy = 8;
         infoPanel.add(new JLabel("Интеллект: "), gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 7;
+        gbc.gridy = 8;
         JProgressBar intelligenceBar = new JProgressBar(0, 50);
         intelligenceBar.setValue(ork.getIntelligence());
         infoPanel.add(intelligenceBar, gbc);
 
-        // Здоровье
         gbc.gridx = 0;
-        gbc.gridy = 8;
+        gbc.gridy = 9;
         infoPanel.add(new JLabel("Здоровье: "), gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 8;
+        gbc.gridy = 9;
         JProgressBar healthBar = new JProgressBar(0, 200);
         healthBar.setValue(ork.getHealth());
         infoPanel.add(healthBar, gbc);
+
+        // Специальный предмет
+        gbc.gridx = 0;
+        gbc.gridy = 10;
+        gbc.gridwidth = 2; // Занимает 2 колонки
+        JLabel specialItemLabel = new JLabel("Специальный предмет: ");
+        if (type.equals("Командир")) {
+            specialItemLabel.setText("Специальный предмет: Горн");
+        } else {
+            specialItemLabel.setText("Специальный предмет: Без специального предмета");
+        }
+        infoPanel.add(specialItemLabel, gbc);
 
         infoPanel.revalidate();
         infoPanel.repaint();

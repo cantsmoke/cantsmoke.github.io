@@ -5,6 +5,7 @@
 package com.mycompany.lb2;
 
 import com.github.javafaker.Faker;
+import com.mycompany.lb2.gear.Bow;
 
 /**
  *
@@ -34,6 +35,7 @@ public class OrcDirector {
         orkBuilder.setAgility(faker.number().numberBetween(50, 60));
         orkBuilder.setIntelligence(faker.number().numberBetween(40, 50));
         orkBuilder.setHealth(faker.number().numberBetween(150, 200));
+        orkBuilder.setBanner();
         return orkBuilder.build();
     }
 
@@ -44,6 +46,7 @@ public class OrcDirector {
         orkBuilder.setAgility(faker.number().numberBetween(80, 100));
         orkBuilder.setIntelligence(faker.number().numberBetween(30, 40));
         orkBuilder.setHealth(faker.number().numberBetween(65, 75));
+        orkBuilder.setWeapon(new Bow());
         return orkBuilder.build();
     }
 }
