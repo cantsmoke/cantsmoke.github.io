@@ -67,14 +67,14 @@ public class DolGuldurOrkBuilder implements OrkBuilder {
             this.ork.setWeapon(gearFactory.createWeapon());
         }
         this.ork.setArmor(gearFactory.createArmor());
-        this.ork.setBanner(gearFactory.createBanner());
+        //this.ork.setBanner(gearFactory.createBanner());
         flag = true;
         return this.ork;
     }
 
     @Override
     public void setBanner() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.ork.setBanner(gearFactory.createBanner());
     }
 
 }

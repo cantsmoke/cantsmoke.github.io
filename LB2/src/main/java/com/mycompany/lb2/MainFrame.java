@@ -207,6 +207,9 @@ public class MainFrame extends JFrame {
         infoPanel.add(typeLabel, gbc);
 
         // Племя
+        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) armyTree.getLastSelectedPathComponent();
+        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) selectedNode.getParent(); // Родительский узел (племя)
+        String tribeName = parent.getUserObject().toString(); // Название племени
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1; // Вернуться к одной колонке
@@ -214,7 +217,7 @@ public class MainFrame extends JFrame {
 
         gbc.gridx = 1;
         gbc.gridy = 1;
-        infoPanel.add(new JLabel(ork.getBanner() != null ? ork.getBanner().getName() : "Без знамени"), gbc);
+        infoPanel.add(new JLabel(tribeName), gbc);
 
         // Отображение имени, оружия, брони и знамени
         gbc.gridx = 0;
