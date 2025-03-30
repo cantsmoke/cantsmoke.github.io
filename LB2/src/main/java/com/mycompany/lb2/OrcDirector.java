@@ -1,16 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.lb2;
 
 import com.github.javafaker.Faker;
 import com.mycompany.lb2.gear.Bow;
 
-/**
- *
- * @author Arseniy
- */
 public class OrcDirector {
     private OrkBuilder orkBuilder;
 
@@ -19,7 +11,6 @@ public class OrcDirector {
     }
 
     public Ork createBasicOrk() {
-        //orkBuilder.setName("Базовый орк");
         Faker faker = new Faker();
         orkBuilder.setStrength(faker.number().numberBetween(40, 50));
         orkBuilder.setAgility(faker.number().numberBetween(40, 50));
@@ -29,7 +20,6 @@ public class OrcDirector {
     }
 
     public Ork createLeaderOrk() {
-        //orkBuilder.setName("Командир орков");
         Faker faker = new Faker();
         orkBuilder.setStrength(faker.number().numberBetween(70, 90));
         orkBuilder.setAgility(faker.number().numberBetween(50, 60));
@@ -40,7 +30,6 @@ public class OrcDirector {
     }
 
     public Ork createScoutOrk() {
-        //orkBuilder.setName("Разведчик орков");
         Faker faker = new Faker();
         orkBuilder.setStrength(faker.number().numberBetween(20, 40));
         orkBuilder.setAgility(faker.number().numberBetween(80, 100));

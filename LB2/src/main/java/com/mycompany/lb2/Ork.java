@@ -1,17 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.lb2;
 
 import com.mycompany.lb2.gear.Armor;
 import com.mycompany.lb2.gear.Banner;
 import com.mycompany.lb2.gear.Weapon;
 
-/**
- *
- * @author Arseniy
- */
 public class Ork {
     private String name;
     private int strength;
@@ -22,7 +14,6 @@ public class Ork {
     private Armor armor;
     private Banner banner;
 
-    // Getters and Setters
     public String getName() {
         return name;
     }

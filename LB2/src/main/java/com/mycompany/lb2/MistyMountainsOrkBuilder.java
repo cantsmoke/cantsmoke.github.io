@@ -1,15 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.lb2;
 
 import com.mycompany.lb2.gear.OrcGearFactory;
 
-/**
- *
- * @author Arseniy
- */
 import com.github.javafaker.Faker;
 import com.mycompany.lb2.gear.Weapon;
 
@@ -23,29 +15,25 @@ public class MistyMountainsOrkBuilder implements OrkBuilder {
         this.ork = new Ork();
     }
 
-    //@Override
-    public String comeUpWithName(/*String name*/) {
-        //if (name == null || name.isEmpty()) {
-            Faker faker = new Faker();
-            return faker.lordOfTheRings().character();//this.ork.setName(faker.lordOfTheRings().character()); // Генерация имени из Lord of the Rings
-        //} else {
-        //    this.ork.setName(name);
-        //}
+    @Override
+    public String comeUpWithName() {
+        Faker faker = new Faker();
+        return faker.lordOfTheRings().character();
     }
 
     @Override
     public void setStrength(int strength) {
-        this.ork.setStrength((int) (strength * 0.9)); // Снижение силы на 10%
+        this.ork.setStrength((int) (strength * 0.9));
     }
 
     @Override
     public void setAgility(int agility) {
-        this.ork.setAgility((int) (agility * 1.3)); // Увеличение ловкости на 30%
+        this.ork.setAgility((int) (agility * 1.3));
     }
 
     @Override
     public void setIntelligence(int intelligence) {
-        this.ork.setIntelligence((int) (intelligence * 0.7)); // Снижение интеллекта на 30%
+        this.ork.setIntelligence((int) (intelligence * 0.7));
     }
 
     @Override
@@ -66,7 +54,6 @@ public class MistyMountainsOrkBuilder implements OrkBuilder {
             this.ork.setWeapon(gearFactory.createWeapon());
         }
         this.ork.setArmor(gearFactory.createArmor());
-        //this.ork.setBanner(gearFactory.createBanner());
         flag = true;
         return this.ork;
     }
