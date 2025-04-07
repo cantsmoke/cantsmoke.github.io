@@ -2,8 +2,6 @@ package com.mycompany.lb2;
 
 import com.mycompany.lb2.gear.OrcGearFactory;
 
-import com.github.javafaker.Faker;
-import com.mycompany.lb2.gear.Banner;
 import com.mycompany.lb2.gear.Weapon;
 
 public class MordorOrkBuilder extends OrkBuilder {
