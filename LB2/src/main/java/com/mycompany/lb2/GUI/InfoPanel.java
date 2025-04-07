@@ -1,72 +1,20 @@
-package com.mycompany.lb2;
+package com.mycompany.lb2.GUI;
 
+import com.mycompany.lb2.Ork;
 import com.mycompany.lb2.gear.Bow;
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import javax.swing.*;
+import java.awt.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 
-public class MainFrame extends JFrame {
-    private JTree armyTree;
-    private DefaultTreeModel treeModel;
-    private DefaultMutableTreeNode root;
-    private JPanel controlPanel;
+public class InfoPanel {
     private JPanel infoPanel;
+    private ArmyTree armyTree;
 
-    public MainFrame() {
-        setTitle("Армия Мордора");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        root = new DefaultMutableTreeNode("Армия Мордора");
-        treeModel = new DefaultTreeModel(root);
-        armyTree = new JTree(treeModel);
-
-        controlPanel = createControlPanel();
-
+    public InfoPanel(ArmyTree armyTree) {
         infoPanel = createInfoPanel();
-
-        add(new JScrollPane(armyTree), BorderLayout.CENTER);
-        add(controlPanel, BorderLayout.NORTH);
-        add(infoPanel, BorderLayout.EAST);
-
-        armyTree.addTreeSelectionListener(e -> {
-            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) armyTree.getLastSelectedPathComponent();
-            if (selectedNode != null && selectedNode.getUserObject() instanceof Ork) {
-                Ork selectedOrk = (Ork) selectedNode.getUserObject();
-                updateInfoPanel(selectedOrk);
-            }
-        });
+        this.armyTree = armyTree;
     }
 
-    private JPanel createControlPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        JLabel titleLabel = new JLabel("Создать нового орка:");
-        panel.add(titleLabel);
-
-        JComboBox<String> tribeComboBox = new JComboBox<>(new String[]{"Мордор", "Дол Гулдур", "Мглистые горы"});
-        panel.add(tribeComboBox);
-
-        JComboBox<String> roleComboBox = new JComboBox<>(new String[]{"Базовый", "Командир", "Разведчик"});
-        panel.add(roleComboBox);
-
-        JButton createButton = new JButton("Создать орка");
-        createButton.addActionListener(e -> {
-            String tribe = (String) tribeComboBox.getSelectedItem();
-            String role = (String) roleComboBox.getSelectedItem();
-            Ork ork = createOrk(tribe, role);
-            addOrkToTree(ork, tribe);
-        });
-        panel.add(createButton);
-
-        return panel;
-    }
-    
     private JPanel createInfoPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
@@ -78,8 +26,7 @@ public class MainFrame extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        JLabel typeLabel = new JLabel("Тип орка: ");
-        panel.add(typeLabel, gbc);
+        panel.add(new JLabel("Тип орка: "), gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -152,8 +99,8 @@ public class MainFrame extends JFrame {
 
         return panel;
     }
-    
-    private void updateInfoPanel(Ork ork) {
+
+    public void updateInfoPanel(Ork ork) {
         infoPanel.removeAll();
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -172,7 +119,7 @@ public class MainFrame extends JFrame {
         JLabel typeLabel = new JLabel("Тип орка: " + type);
         infoPanel.add(typeLabel, gbc);
 
-        DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) armyTree.getLastSelectedPathComponent();
+        DefaultMutableTreeNode selectedNode = armyTree.getLastSelectedNode();
         DefaultMutableTreeNode parent = (DefaultMutableTreeNode) selectedNode.getParent();
         String tribeName = parent.getUserObject().toString();
         gbc.gridx = 0;
@@ -260,40 +207,7 @@ public class MainFrame extends JFrame {
         infoPanel.repaint();
     }
 
-    private Ork createOrk(String tribe, String role) {
-        OrkBuilderFactory factory = switch (tribe) {
-            case "Мордор" -> new MordorOrkBuilderFactory();
-            case "Дол Гулдур" -> new DolGuldurOrkBuilderFactory();
-            case "Мглистые горы" -> new MistyMountainsOrkBuilderFactory();
-            default -> throw new IllegalArgumentException("Неизвестное племя");
-        };
-
-        OrcDirector director = new OrcDirector(factory.createOrkBuilder());
-
-        return switch (role) {
-            case "Базовый" -> director.createBasicOrk();
-            case "Командир" -> director.createLeaderOrk();
-            case "Разведчик" -> director.createScoutOrk();
-            default -> throw new IllegalArgumentException("Неизвестная роль");
-        };
-    }
-
-    private void addOrkToTree(Ork ork, String tribe) {
-        DefaultMutableTreeNode tribeNode = findOrCreateTribeNode(tribe);
-        DefaultMutableTreeNode orkNode = new DefaultMutableTreeNode(ork);
-        tribeNode.add(orkNode);
-        treeModel.reload();
-    }
-
-    private DefaultMutableTreeNode findOrCreateTribeNode(String tribe) {
-        for (int i = 0; i < root.getChildCount(); i++) {
-            DefaultMutableTreeNode child = (DefaultMutableTreeNode) root.getChildAt(i);
-            if (child.getUserObject().equals(tribe)) {
-                return child;
-            }
-        }
-        DefaultMutableTreeNode newTribeNode = new DefaultMutableTreeNode(tribe);
-        root.add(newTribeNode);
-        return newTribeNode;
+    public JPanel getPanel() {
+        return infoPanel;
     }
 }
