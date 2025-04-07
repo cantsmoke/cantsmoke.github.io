@@ -2,6 +2,7 @@ package com.mycompany.lb2;
 
 import com.github.javafaker.Faker;
 import com.mycompany.lb2.gear.Bow;
+import com.mycompany.lb2.gear.WarHammer;
 
 public class OrcDirector {
     private OrkBuilder orkBuilder;
@@ -25,6 +26,7 @@ public class OrcDirector {
         orkBuilder.setAgility(faker.number().numberBetween(50, 60));
         orkBuilder.setIntelligence(faker.number().numberBetween(40, 50));
         orkBuilder.setHealth(faker.number().numberBetween(150, 200));
+        orkBuilder.setWeapon(new WarHammer());
         orkBuilder.setBanner();
         return orkBuilder.build();
     }
