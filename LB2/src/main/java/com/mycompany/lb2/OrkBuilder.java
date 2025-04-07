@@ -1,5 +1,6 @@
 package com.mycompany.lb2;
 
+import com.github.javafaker.Faker;
 import com.mycompany.lb2.gear.Weapon;
 
 public abstract class OrkBuilder {
@@ -11,7 +12,10 @@ public abstract class OrkBuilder {
     protected Weapon weapon;
     protected boolean hasBanner;
 
-    public abstract String comeUpWithName();
+    public String comeUpWithName() {
+        Faker faker = new Faker();
+        return faker.lordOfTheRings().character();
+    }
 
     public void setStrength(int strength) {
         this.strength = strength;

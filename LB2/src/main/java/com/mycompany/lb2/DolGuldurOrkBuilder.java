@@ -16,12 +16,6 @@ public class DolGuldurOrkBuilder extends OrkBuilder {
     }
 
     @Override
-    public String comeUpWithName() {
-        Faker faker = new Faker();
-        return faker.lordOfTheRings().character();
-    }
-
-    @Override
     public void setStrength(int strength) {
         this.ork.setStrength(strength);
     }
