@@ -6,7 +6,7 @@ import com.github.javafaker.Faker;
 import com.mycompany.lb2.gear.Banner;
 import com.mycompany.lb2.gear.Weapon;
 
-public class MordorOrkBuilder implements OrkBuilder {
+public class MordorOrkBuilder extends OrkBuilder {
     private final OrcGearFactory gearFactory;
     private Ork ork;
     private static boolean flag = true;

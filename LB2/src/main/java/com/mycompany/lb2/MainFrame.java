@@ -150,11 +150,11 @@ public class MainFrame extends JFrame {
         JProgressBar healthBar = new JProgressBar(0, 200);
         panel.add(healthBar, gbc);
 
-        gbc.gridx = 0;
+        /*gbc.gridx = 0;
         gbc.gridy = 9;
         gbc.gridwidth = 2;
         JLabel specialItemLabel = new JLabel("Специальный предмет: ");
-        panel.add(specialItemLabel, gbc);
+        panel.add(specialItemLabel, gbc);*/
 
         return panel;
     }
@@ -262,7 +262,7 @@ public class MainFrame extends JFrame {
         healthBar.setValue(ork.getHealth());
         infoPanel.add(healthBar, gbc);
 
-        gbc.gridx = 0;
+        /*gbc.gridx = 0;
         gbc.gridy = 10;
         gbc.gridwidth = 2;
         JLabel specialItemLabel = new JLabel("Специальный предмет: ");
@@ -271,7 +271,7 @@ public class MainFrame extends JFrame {
         } else {
             specialItemLabel.setText("Специальный предмет: Без специального предмета");
         }
-        infoPanel.add(specialItemLabel, gbc);
+        infoPanel.add(specialItemLabel, gbc);*/
 
         infoPanel.revalidate();
         infoPanel.repaint();

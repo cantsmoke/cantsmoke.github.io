@@ -5,7 +5,7 @@ import com.mycompany.lb2.gear.OrcGearFactory;
 import com.github.javafaker.Faker;
 import com.mycompany.lb2.gear.Weapon;
 
-public class MistyMountainsOrkBuilder implements OrkBuilder {
+public class MistyMountainsOrkBuilder extends OrkBuilder {
     private final OrcGearFactory gearFactory;
     private Ork ork;
     private static boolean flag = true;

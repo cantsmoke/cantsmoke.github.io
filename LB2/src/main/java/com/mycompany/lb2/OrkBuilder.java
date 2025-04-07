@@ -1,15 +1,41 @@
 package com.mycompany.lb2;
 
-import com.mycompany.lb2.gear.Banner;
 import com.mycompany.lb2.gear.Weapon;
 
-public interface OrkBuilder {
-    String comeUpWithName();
-    void setStrength(int strength);
-    void setAgility(int agility);
-    void setIntelligence(int intelligence);
-    void setHealth(int health);
-    void setWeapon(Weapon weapon);
-    void setBanner();
-    Ork build();
+public abstract class OrkBuilder {
+    protected String name;
+    protected int strength;
+    protected int agility;
+    protected int intelligence;
+    protected int health;
+    protected Weapon weapon;
+    protected boolean hasBanner;
+
+    public abstract String comeUpWithName();
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public void setAgility(int agility) {
+        this.agility = agility;
+    }
+
+    public void setIntelligence(int intelligence) {
+        this.intelligence = intelligence;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
+    }
+
+    public void setBanner() {
+        this.hasBanner = true;
+    }
+
+    public abstract Ork build();
 }
