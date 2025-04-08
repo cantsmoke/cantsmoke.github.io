@@ -6,12 +6,10 @@ import com.mycompany.lb2.gear.Weapon;
 
 public class MistyMountainsOrkBuilder extends OrkBuilder {
     private final OrcGearFactory gearFactory;
-    private Ork ork;
-    private static boolean flag = true;
+    private static boolean weaponChoiceflag = true;
 
     public MistyMountainsOrkBuilder(OrcGearFactory gearFactory) {
         this.gearFactory = gearFactory;
-        this.ork = new Ork();
     }
 
     @Override
@@ -37,17 +35,17 @@ public class MistyMountainsOrkBuilder extends OrkBuilder {
     @Override
     public void setWeapon(Weapon weapon) {
         this.ork.setWeapon(weapon);
-        flag = false;
+        weaponChoiceflag = false;
     }
     
     @Override
     public Ork build() {
         this.ork.setName(comeUpWithName());
-        if (flag) {
+        if (weaponChoiceflag) {
             this.ork.setWeapon(gearFactory.createWeapon());
         }
         this.ork.setArmor(gearFactory.createArmor());
-        flag = true;
+        weaponChoiceflag = true;
         return this.ork;
     }
 

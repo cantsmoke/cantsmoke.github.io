@@ -4,42 +4,27 @@ import com.github.javafaker.Faker;
 import com.mycompany.lb2.gear.Weapon;
 
 public abstract class OrkBuilder {
-    protected String name;
-    protected int strength;
-    protected int agility;
-    protected int intelligence;
-    protected int health;
-    protected Weapon weapon;
-    protected boolean hasBanner;
+    protected Ork ork;
+    private static String[] prefixes = {"Orc", "Grim", "Gul", "Uruk", "Zug"};
+    
+    public OrkBuilder() {
+        this.ork = new Ork();
+    }
 
     public String comeUpWithName() {
         Faker faker = new Faker();
-        return faker.lordOfTheRings().character();
+        String orcName = faker.lordOfTheRings().character();
+        int randomIndex = faker.random().nextInt(prefixes.length);
+        String prefix = prefixes[randomIndex];
+        return prefix + " " + orcName;
     }
 
-    public void setStrength(int strength) {
-        this.strength = strength;
-    }
-
-    public void setAgility(int agility) {
-        this.agility = agility;
-    }
-
-    public void setIntelligence(int intelligence) {
-        this.intelligence = intelligence;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public void setWeapon(Weapon weapon) {
-        this.weapon = weapon;
-    }
-
-    public void setBanner() {
-        this.hasBanner = true;
-    }
+    public abstract void setStrength(int strength);
+    public abstract void setAgility(int agility);
+    public abstract void setIntelligence(int intelligence);
+    public abstract void setHealth(int health);
+    public abstract void setWeapon(Weapon weapon);
+    public abstract void setBanner();
 
     public abstract Ork build();
 }
